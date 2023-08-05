@@ -1,0 +1,57 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/build/
+    overwrite: yes
+
+permissions: # 복사한 파일들의 소유자정보
+ - object: /
+   pattern: "**"
+   owner: ec2-user
+   group: ec2-user
+   mode: 4755
+hooks:
+  ApplicationStop:
+    - location: hookApplicationStop.sh
+      timeout: 60
+      runas: ec2-user
+  ApplicationStart:
+    - location: hookApplicationStart.sh
+      timeout: 60
+      runas: ec2-user
+  ValidateService:
+    - location: ValidateService.sh
+      timeout: 120
+      runas: ec2-user
+# During the ApplicationStop deployment lifecycle event, run the commands
+#   in the script specified in "location" starting from the root of the
+#   revision's file bundle.
+#  ApplicationStop:
+#     - location: hookApplicationStop.sh
+#      timeout: 10
+#      runas: ec2-user
+# During the BeforeInstall deployment lifecycle event, run the commands
+#   in the script specified in "location".
+#   BeforeInstall:
+#     - location: hookBeforeInstall.sh
+#       timeout: 10
+#       runas: root
+# During the AfterInstall deployment lifecycle event, run the commands
+#   in the script specified in "location".
+#   AfterInstall:
+#     - location: hookAfterInstall.sh
+#       timeout: 10
+#       runas: root
+# During the ApplicationStart deployment lifecycle event, run the commands
+#   in the script specified in "location".
+#  ApplicationStart:
+#     - location: hookApplicationStart.sh
+#      timeout: 30
+#      runas: root
+# During the ValidateService deployment lifecycle event, run the commands
+#   in the script specified in "location".
+#  ValidateService:
+#    - location:
+#      timeout:
+#      runas:

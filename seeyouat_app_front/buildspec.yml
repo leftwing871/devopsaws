@@ -1,0 +1,28 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+    commands:
+      - echo Build Step install on `date`
+  build:
+    commands:
+      - echo Build Step build on `date`
+      - chmod +x ./gradlew
+      - ./gradlew build
+  post_build:
+    commands:
+      - echo Build Step post_build on `date`
+      - echo $(basename ./build/libs/*.jar)
+artifacts:
+  files:
+    - appspec.yml
+    - buildspec.yml
+    - 'build/libs/*.jar'
+    - '*.sh'
+  discard-paths: yes
+
+cache:
+  paths:
+    - '/root/.gradle/caches/**/*'
